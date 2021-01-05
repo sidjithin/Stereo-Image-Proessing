@@ -1,0 +1,10 @@
+float64 probability
+int64 x
+int64 y
+int64 width
+int64 height
+int16 id
+int64 posX
+int64 posY
+int64 posZ
+int64 image_type
