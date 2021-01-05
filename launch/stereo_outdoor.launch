@@ -1,0 +1,20 @@
+<launch>    
+   <param name="use_sim_time" type="bool" value="True"/>   
+   <!-- Just to uncompress images for stereo_image_rect -->
+   <node name="republish_left" type="republish" pkg="image_transport" args="compressed in:=/stereo_camera/left/image_raw_throttle raw out:=/stereo_camera/left/image_raw" />
+   <node name="republish_right" type="republish" pkg="image_transport" args="compressed in:=/stereo_camera/right/image_raw_throttle raw out:=/stereo_camera/right/image_raw" /> 
+   <node pkg="rosbag" type="play" name="player" output="screen" args="--clock /home/user1/stereo_ws/stereo_outdoorA.bag"/>
+   
+   <group ns="/stereo_camera" >
+      <node pkg="nodelet" type="nodelet" name="stereo_nodelet"  args="manager"/>
+   
+      <node pkg="stereo_image_proc" type="stereo_image_proc2" name="stereo_image_proc2">
+         <remap from="left/image_raw"    to="left/image_raw"/>
+         <remap from="left/camera_info"  to="left/camera_info_throttle"/>
+         <remap from="right/image_raw"   to="right/image_raw"/>
+         <remap from="right/camera_info" to="right/camera_info_throttle"/>
+         <param name="disparity_range" value="128"/>
+      </node>
+   </group> 
+</launch>
+   
